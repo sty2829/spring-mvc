@@ -9,4 +9,10 @@ public interface FoodDAO {
 	List<FoodInfo> getFoodInfoList();
 	
 	int insertFoodInfo(FoodInfo food);
+	
+	FoodInfo getFoodInfo(long fiNum);
+	
+	int updateFoodInfo(FoodInfo food);
+	
+	int deleteFoodInfo(long fiNum);
 }

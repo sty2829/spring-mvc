@@ -41,11 +41,63 @@ public class FoodDAOImpl implements FoodDAO {
 		}
 		return cnt;
 	}
+	
+	@Override
+	public FoodInfo getFoodInfo(long fiNum) {
+		EntityManager em = CommonEntityManager.getEM();
+		TypedQuery<FoodInfo> fiTQ = em.createQuery("from FoodInfo where fiNum = :fiNum", FoodInfo.class);
+		fiTQ.setParameter("fiNum", fiNum);
+		FoodInfo foodInfo = fiTQ.getSingleResult();
+		return foodInfo;
+	}
 
+	@Override
+	public int updateFoodInfo(FoodInfo food) {
+		EntityManager em = CommonEntityManager.getEM();
+		EntityTransaction et = em.getTransaction();
+		int cnt = 1;
+		try {
+			et.begin();
+			em.merge(food);
+			et.commit();
+		} catch(Exception e) {
+			e.printStackTrace();
+			cnt = 0;
+		} finally {
+			em.close();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int deleteFoodInfo(long fiNum) {
+		EntityManager em = CommonEntityManager.getEM();
+		EntityTransaction et = em.getTransaction();
+		int cnt = 1;
+		try {
+			TypedQuery<FoodInfo> fiTQ = em.createQuery("from FoodInfo where fiNum = :fiNum", FoodInfo.class);
+			fiTQ.setParameter("fiNum", fiNum);
+			FoodInfo foodInfo = fiTQ.getSingleResult();
+			et.begin();
+			em.remove(foodInfo);
+			et.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			et.rollback();
+			cnt = 0;
+		} finally {
+			em.close();
+		}
+		return cnt;
+	}
 	public static void main(String[] args) {
 		FoodDAO foodDAO = new FoodDAOImpl();
-		List<FoodInfo> foodList = foodDAO.getFoodInfoList();
-		System.out.println(foodList);
+		
 	}
+
+
+	
+
+	
 	
 }

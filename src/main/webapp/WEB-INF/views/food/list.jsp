@@ -21,7 +21,7 @@
 	</thead>
 	<tbody>
 		<c:forEach items="${foodList}" var="food">
-			<tr>
+			<tr onclick="location.href='/food/view?fiNum=${food.fiNum }'" style="cursor:pointer">
 				<td>${food.fiNum}</td>	
 				<td>${food.fiName}</td>	
 				<td>${food.fiType}</td>	

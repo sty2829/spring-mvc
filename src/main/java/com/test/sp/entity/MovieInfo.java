@@ -2,14 +2,21 @@ package com.test.sp.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.test.sp.util.DateUtil;
 
 @Entity
 @Table(name = "movie_info")
 public class MovieInfo {
 
 	@Id
+	@SequenceGenerator(name = "seqMiNum", sequenceName = "seq_mi_num", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqMiNum")
 	@Column(name = "mi_num")
 	private Long miNum;
 	@Column(name = "mi_name")
@@ -23,7 +30,7 @@ public class MovieInfo {
 	@Column(name = "mi_release_date")
 	private String miReleaseDate;
 	@Column(name = "mi_credat")
-	private String miCredat;
+	private String miCredat = DateUtil.getDate();
 	@Column(name = "mi_desc")
 	private String miDesc;
 	

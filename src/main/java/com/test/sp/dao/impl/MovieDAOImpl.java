@@ -1,8 +1,10 @@
 package com.test.sp.dao.impl;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -19,13 +21,76 @@ public class MovieDAOImpl implements MovieDAO {
 		EntityManager em = CommonEntityManager.getEM();
 		TypedQuery<MovieInfo> miTQ = em.createQuery("from MovieInfo order by miNum", MovieInfo.class);
 		List<MovieInfo> movieList = miTQ.getResultList();
+		em.close();
 		return movieList;
 	}
-	
-	public static void main(String[] args) {
-		MovieDAO movieDAO = new MovieDAOImpl();
-		System.out.println(movieDAO.getMovieInfoList());
-		
+
+	@Override
+	public MovieInfo getMovieInfo(long miNum) {
+		EntityManager em = CommonEntityManager.getEM();
+		TypedQuery<MovieInfo> miTQ = em.createQuery("from MovieInfo where miNum = :miNum", MovieInfo.class);
+		miTQ.setParameter("miNum", miNum);
+		MovieInfo movieInfo = miTQ.getSingleResult();
+		em.close();
+		return movieInfo;
+	}
+
+	@Override
+	public int insertMovieInfo(MovieInfo movieInfo) {
+		EntityManager em = CommonEntityManager.getEM();
+		EntityTransaction et = em.getTransaction();
+		int cnt = 1;
+		try {
+			et.begin();
+			em.persist(movieInfo);
+			et.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			cnt = 0;
+		} finally {
+			em.close();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int updateMovieInfo(MovieInfo movieInfo) {
+		EntityManager em = CommonEntityManager.getEM();
+		EntityTransaction et = em.getTransaction();
+		int cnt = 1;
+		try {
+			et.begin();
+			em.merge(movieInfo);
+			et.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			cnt = 0;
+		} finally {
+			em.close();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int deleteMovieInfo(long miNum) {
+		EntityManager em = CommonEntityManager.getEM();
+		EntityTransaction et = em.getTransaction();
+		int cnt = 1;
+		try {
+			et.begin();
+			TypedQuery<MovieInfo> miTQ = em.createQuery("from MovieInfo where miNum = :miNum", MovieInfo.class);
+			miTQ.setParameter("miNum", miNum);
+			MovieInfo movieInfo = miTQ.getSingleResult();
+			em.remove(movieInfo);
+			et.commit();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			cnt = 0;
+		} finally {
+			em.close();
+		}
+		return cnt;
 	}
 
 }

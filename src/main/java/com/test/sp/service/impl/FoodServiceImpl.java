@@ -25,5 +25,20 @@ public class FoodServiceImpl implements FoodService{
 		return foodDAO.insertFoodInfo(food);
 	}
 
+	@Override
+	public FoodInfo getFoodInfo(long fiNum) {
+		return foodDAO.getFoodInfo(fiNum);
+	}
+
+	@Override
+	public int updateFoodInfo(FoodInfo food) {
+		return foodDAO.updateFoodInfo(food);
+	}
+
+	@Override
+	public int deleteFoodInfo(long fiNum) {
+		return foodDAO.deleteFoodInfo(fiNum);
+	}
+
 	
 }

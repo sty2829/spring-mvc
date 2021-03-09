@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,16 @@
 <title>Insert title here</title>
 </head>
 <body>
+<c:if test="${result ne null }">
+	<script>
+		if(${result} == 1){
+			alert('영화 등록에 성공하였습니다');
+			location.href = '/movies';
+		}else{
+			alert('영화 등록에 실패하였습니다');
+		}
+	</script>
+</c:if>
 <h2>무비 등록</h2>
 <form method="POST" action="/movie/insert">
 	<input type="text" name="miName" placeholder="영화명"><br>
