@@ -39,6 +39,4 @@ public class FoodServiceImpl implements FoodService{
 	public int deleteFoodInfo(long fiNum) {
 		return foodDAO.deleteFoodInfo(fiNum);
 	}
-
-	
 }
